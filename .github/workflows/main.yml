@@ -4,7 +4,16 @@ on:
   push:
     branches: 
       - master
-
+env:
+  REPO_URL: https://github.com/Lienol/openwrt
+  REPO_BRANCH: dev-19.07
+  CONFIG_FILE: x86.config
+  DIY_SH: diy.sh
+  FREE_UP_DISK: false
+  SSH_ACTIONS: true
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: true
+  TZ: Asia/Shanghai
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -23,6 +32,10 @@ jobs:
         cd /home/runner/openwrt
         ./scripts/feeds update -a 
         ./scripts/feeds install -a
+      
+    #- name: SSH connection to Actions
+    #  uses: P3TERX/debugger-action@master
+     # if: env.SSH_ACTIONS == 'true'
     - name: Before Build
       run: |
         /bin/bash /home/runner/work/build-openwrt/build-openwrt/before_build.sh
